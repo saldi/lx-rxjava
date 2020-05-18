@@ -18,12 +18,12 @@
     },
     "Loggers": {
       "Root": {
+        "level": "info",
         "AppenderRef": [
           {
             "ref": "Console"
           }
-        ],
-        "level": "trace"
+        ]
       }
     }
   }
