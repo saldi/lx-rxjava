@@ -6,9 +6,9 @@ services:
     ports:
       - 9092:9092
       - 8082:8082
-  api:
+  users-api:
     image: lxreact/users:api
-    container_name: lxreact-api
+    container_name: lxreact-users-api
     depends_on:
       - h2
     links:
@@ -16,4 +16,15 @@ services:
     ports:
       - 8080:8080
     env_file:
-      - application.properties.env
+      - users-data.properties.env
+  locations-api:
+    image: lxreact/locations:api
+    container_name: lxreact-locations-api
+    depends_on:
+      - h2
+    links:
+      - h2
+    ports:
+      - 9090:8080
+    env_file:
+      - locations-data.properties.env

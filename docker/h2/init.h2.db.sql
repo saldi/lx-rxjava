@@ -1,11 +1,23 @@
 create table users(
-    id varchar(40) not null primary key,
+    id identity not null primary key,
     first_name varchar(100),
     last_name varchar(100),
-    age integer
+    age integer,
+    division_number varchar(10)
 );
 
-insert into users(id, first_name, last_Name, age) values ('05a35dfc-6772-11ea-bc55-0242ac130003', 'Jan', 'Kowalski', 45);
-insert into users(id, first_name, last_Name, age) values ('1775faf8-6772-11ea-bc55-0242ac130003', 'Jan', 'Nowak', 33);
-insert into users(id, first_name, last_Name, age) values ('1e6d2c8c-6772-11ea-bc55-0242ac130003', 'Jerzy', 'Malinowski', 50);
-insert into users(id, first_name, last_Name, age) values ('29095efe-6772-11ea-bc55-0242ac130003', 'Maciej', 'Kwiatkowski', 11);
+insert into users(id, first_name, last_Name, age, division_number) values (null, 'Jan', 'Kowalski', 45, 'P0500');
+insert into users(id, first_name, last_Name, age, division_number) values (null, 'Jan', 'Nowak', 33, 'P0300');
+insert into users(id, first_name, last_Name, age, division_number) values (null, 'Jerzy', 'Malinowski', 50, 'P0500');
+insert into users(id, first_name, last_Name, age, division_number) values (null, 'Maciej', 'Kwiatkowski', 11, 'P0300');
+
+
+create table locations(
+                      id identity not null primary key,
+                      location_number varchar(100),
+                      location_name varchar(100)
+);
+
+create index location_number on locations(location_number);
+insert into locations(id, location_number, location_name) values(null, 'P0500', 'Warsaw');
+insert into locations(id, location_number, location_name) values(null, 'P0300', 'Cracow');

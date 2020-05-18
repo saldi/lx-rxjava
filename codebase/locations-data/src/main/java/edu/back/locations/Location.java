@@ -1,6 +1,5 @@
-package edu.back.users;
+package edu.back.locations;
 
-import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,23 +11,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity()
-@Table(name = "users")
+@Table(name = "locations")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class User implements Serializable {
+public class Location {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @Column(name = "first_name")
-    String firstName;
-    @Column(name = "last_name")
-    String lastName;
-    @Column(name = "age")
-    Integer age;
-    @Column(name = "division_number")
-    String divisionNumber;
-
+    @Column(name = "location_number")
+    String locationNumber;
+    @Column(name = "location_name")
+    String locationName;
 
 }

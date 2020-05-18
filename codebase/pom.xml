@@ -13,6 +13,7 @@
   <modules>
     <module>jdk-streams</module>
     <module>users-data</module>
+    <module>locations-data</module>
     <module>rx</module>
     <module>rx-ui</module>
   </modules>

@@ -3,6 +3,7 @@ package edu.back.users;
 import java.util.List;
 import java.util.Random;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,27 +22,27 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> justList(@RequestHeader("TraceId") String traceId) {
-        logTraceId(traceId);
+    public List<User> justList(HttpEntity<String> entity) {
+        logTraceId(entity);
         return userRepository.findAll();
     }
 
-    private void logTraceId(String traceId) {
-        log.info("TraceId {}", traceId);
+    private void logTraceId(HttpEntity<String> entity) {
+        log.info("TraceId {}", entity.getHeaders().get("TraceId"));
     }
 
     @GetMapping(params = "_sleep=random")
-    public List<User> list(@RequestHeader("TraceId") String traceId) throws InterruptedException {
+    public List<User> list(HttpEntity<String> entity) throws InterruptedException {
         int randomSleep = new Random().nextInt(2000);
-        log.info("Request with sleep {} with TraceId {}", randomSleep, traceId);
+        log.info("Request with random sleep {} with TraceId {}", randomSleep, entity.getHeaders().get("TraceId"));
         Thread.sleep(randomSleep);
         return userRepository.findAll();
     }
 
     @GetMapping(params = "_sleep")
     public List<User> list(@RequestParam("_sleep") Long sleep,
-            @RequestHeader("TraceId") String traceId) throws InterruptedException {
-        log.info("Request with sleep {} with TraceId {}", sleep, traceId);
+            HttpEntity<String> entity) throws InterruptedException {
+        log.info("Request with sleep {} with TraceId {}", sleep, entity.getHeaders().get("TraceId"));
         Thread.sleep(sleep);
         return userRepository.findAll();
     }
