@@ -1,0 +1,30 @@
+version: '3.4'
+services:
+  h2:
+    image: lxreact/users:h2
+    container_name: lxreact-h2
+    ports:
+      - 9092:9092
+      - 8082:8082
+  users-api:
+    image: lxreact/users:api
+    container_name: lxreact-users-api
+    depends_on:
+      - h2
+    links:
+      - h2
+    ports:
+      - 8080:8080
+    env_file:
+      - users-data.properties.env
+  locations-api:
+    image: lxreact/locations:api
+    container_name: lxreact-locations-api
+    depends_on:
+      - h2
+    links:
+      - h2
+    ports:
+      - 9000:8080
+    env_file:
+      - locations-data.properties.env
