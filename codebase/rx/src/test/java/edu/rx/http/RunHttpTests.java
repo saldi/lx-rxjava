@@ -25,7 +25,7 @@ public class RunHttpTests {
 
     @Test
     public void simpleHttpTest() throws InterruptedException, ExecutionException {
-        AsyncHttpClient asyncHttpClient = asyncHttpClient(config().setIoThreadsCount(1).build());
+        AsyncHttpClient asyncHttpClient = asyncHttpClient(config().build());
         RxHttpClient rxHttpClient = RxHttpClient.create(asyncHttpClient);
         asyncHttpClient.executeRequest(get("http://localhost:8080/reset")).get();
         AtomicInteger counter = new AtomicInteger(0);
@@ -37,7 +37,6 @@ public class RunHttpTests {
             maybe.subscribe(response -> {
                 log.info("Response Status {}", response.getStatusCode());
                 log.info(counter.getAndIncrement());
-                Thread.sleep(2000);
             });
         }
 
@@ -45,49 +44,6 @@ public class RunHttpTests {
 
 
     }
-
-//    @Test
-//    public void okHttpClient() throws InterruptedException, IOException {
-//        OkHttpClient httpClient = new Builder()
-//                .readTimeout(10000L, TimeUnit.MILLISECONDS)
-//                .writeTimeout(10000L, TimeUnit.MILLISECONDS)
-//                .connectTimeout(10000L, TimeUnit.MILLISECONDS)
-//                .build();
-//
-//        Request resetRequest = new Request.Builder()
-//                .get()
-//                .header("TraceId", generateTraceId())
-//                .url("http://localhost:8080/reset").build();
-//        httpClient.newCall(resetRequest).execute();
-//        for (int i = 0; i < 1000; i++) {
-//
-//            Request request = buildRequest();
-//            httpClient.newCall(request).enqueue(new Callback() {
-//                @Override
-//                public void onFailure(@NotNull Call call, @NotNull IOException e) {
-//                    log.info("failure {}", e.getMessage());
-//                }
-//
-//                @SneakyThrows
-//                @Override
-//                public void onResponse(@NotNull Call call, @NotNull okhttp3.Response response)
-//                        throws IOException {
-//                    log.info(response.code());
-//                    Thread.sleep(2000);
-//                }
-//            });
-//        }
-//
-//        sleep(100000);
-//
-//    }
-//
-//    private Request buildRequest() {
-//        return new Request.Builder()
-//                .get()
-//                .header("TraceId", generateTraceId())
-//                .url("http://localhost:8080/users?_sleep=2000").build();
-//    }
 
 
     @Test

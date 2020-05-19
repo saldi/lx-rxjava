@@ -81,18 +81,7 @@ public class SimpleTest {
 
     }
 
-    @Test
-    public void threeCellsExample() throws InterruptedException {
-        Observable<Long> firstCell = Observable.interval(2000, TimeUnit.MILLISECONDS);
-        Observable<Long> secondCell = Observable.interval(5500, TimeUnit.MILLISECONDS);
-        Observable.interval(1000, TimeUnit.MILLISECONDS)
-                  .mergeWith(firstCell)
-                  .mergeWith(secondCell)
-                  .buffer(500, TimeUnit.MILLISECONDS)
-                  .filter((list) -> list.size() == 0)
-                  .subscribe((value) -> System.out.println(value));
-        Thread.sleep(10000);
-    }
+
 
 
     @Test

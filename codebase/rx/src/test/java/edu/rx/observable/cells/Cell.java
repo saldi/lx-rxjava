@@ -1,4 +1,4 @@
-package edu.react.rx.observable;
+package edu.rx.observable.cells;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
