@@ -4,7 +4,6 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -12,18 +11,11 @@ import java.util.function.Consumer;
 
 public class Cell extends Observable<Integer> {
 
-    private AtomicInteger value;
-
+    private AtomicInteger value = new AtomicInteger(0);
+    private List<Consumer<Integer>> consumers = new ArrayList<>();
     private Function<Integer, Integer> function;
 
-    private List<Consumer<Integer>> consumers;
-
     private Disposable disposable;
-
-    {
-        this.consumers = new ArrayList<>();
-        this.value = new AtomicInteger(0);
-    }
 
     public Cell() {
 
@@ -54,7 +46,7 @@ public class Cell extends Observable<Integer> {
 
     }
 
-    public void removeSubscribe(){
+    public void removeSubscribe() {
         this.disposable.dispose();
         this.disposable = null;
     }

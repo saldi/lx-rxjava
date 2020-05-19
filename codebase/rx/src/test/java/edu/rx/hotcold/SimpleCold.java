@@ -1,17 +1,18 @@
-package edu.react.rx.hotcold;
+package edu.rx.hotcold;
 
 import io.reactivex.Observable;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.log4j.Log4j2;
+import org.junit.jupiter.api.Test;
 
 @Log4j2
-public class ColdMain {
+public class SimpleCold {
 
-    public static void main(String[] args) throws InterruptedException {
+    @Test
+    public void simple() throws InterruptedException {
         Observable.range(1, 1_000_000)
                   .delay(100, TimeUnit.MILLISECONDS)
-                  .subscribe(ColdMain::compute);
-        Thread.sleep(1000 * 30);
+                  .blockingSubscribe(SimpleCold::compute);
     }
 
 

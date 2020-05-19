@@ -53,16 +53,16 @@ public class RunHttpTests {
 
         ExecutorService executorService = Executors.newFixedThreadPool(5);
 
-        Observable<String> observable = Observable.fromCallable(() -> {
-            Thread.sleep(1500);
-            log.info("Callable");
-            return "Ala ma kota";
-        });
-        for (int i = 0; i < 20; i++) {
-            observable
-                    .subscribeOn(Schedulers.computation())
-                    .subscribe(v -> log.info(v));
-        }
+//        Observable<String> observable = Observable.fromCallable(() -> {
+//            Thread.sleep(1500);
+//            log.info("Callable");
+//            return "Ala ma kota";
+//        });
+//        for (int i = 0; i < 20; i++) {
+//            observable
+//                    .subscribeOn(Schedulers.computation())
+//                    .subscribe(v -> log.info(v));
+//        }
 
         for (int i = 0; i < 1; i++) {
             long time = System.currentTimeMillis();

@@ -1,61 +1,39 @@
 package edu.rx;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 import io.reactivex.schedulers.Schedulers;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.jupiter.api.Test;
-
 import java.util.Date;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.Test;
 
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
-
+@Log4j2
 public class SimpleTest {
 
     private static final Logger LOGGER = LogManager.getLogger(SimpleTest.class.getName());
+
     @Test
     public void simple() {
-
         Observable<String> observable = Observable.just("Kowalski Jan");
-
-        observable
-                .subscribe((name) -> {
-                    System.out.println(name);
-                });
-
-        observable
-                .subscribe((name) -> {
-                    System.out.println(name);
-                });
-
-        observable
-                .subscribe((name) -> {
-                    System.out.println(name);
-                });
 
     }
 
     @Test
     public void array() {
-
-        Observable.fromArray(1, 2, 3, 4, 5)
-                  .filter(value -> value > 3)
-                  .map(value -> String.valueOf(value) + " ala ma kota")
-                  .subscribe(value ->
-                          System.out.println(value));
-
+        Observable.fromArray(1, 2, 3, 4, 5);
     }
 
     @Test
     public void emitter() throws InterruptedException {
-
         ExecutorService executorService = Executors.newFixedThreadPool(2);
-
         Observable<Date> observable = Observable.create(emitter -> {
             for (int i = 0; i < 10; i++) {
                 emitter.onNext(new Date());
@@ -65,23 +43,18 @@ public class SimpleTest {
 
         executorService.submit(() -> {
             observable.subscribe(date -> {
-                System.out.println("1 "+date);
+                log.info("1 " + date);
             });
         });
         MILLISECONDS.sleep(5000);
 
         executorService.submit(() -> {
             observable.subscribe(date -> {
-                System.out.println("2 "+date);
+                log.info("2 " + date);
             });
         });
-
         MILLISECONDS.sleep(10000);
-
-
     }
-
-
 
 
     @Test
@@ -97,44 +70,38 @@ public class SimpleTest {
 
         workService.submit(() -> {
             interval.subscribeOn(subscribeScheduler)
-                    .observeOn(scheduler)
                     .map((value) -> {
-                        LOGGER.info("map1");
+                        log.info("map1");
                         Thread.sleep(3);
                         return value;
                     })
-//                    .observeOn(scheduler)
                     .subscribe((value) -> {
                         latch.countDown();
-                        LOGGER.info("wartość " + value);
+                        log.info("wartość " + value);
                     });
 
         });
         workService.submit(() -> {
             interval.subscribeOn(subscribeScheduler)
-                    .observeOn(scheduler)
                     .map((value) -> {
-                        LOGGER.info("map1");
+                        log.info("map1");
                         return value;
                     })
-                    .observeOn(scheduler)
                     .subscribe((value) -> {
                         latch.countDown();
-                        LOGGER.info("wartość " + value);
+                        log.info("wartość " + value);
                     });
 
         });
         workService.submit(() -> {
             interval.subscribeOn(subscribeScheduler)
-                    .observeOn(scheduler)
                     .map((value) -> {
-                        LOGGER.info("map1");
+                        log.info("map1");
                         return value;
                     })
-                    .observeOn(scheduler)
                     .subscribe((value) -> {
                         latch.countDown();
-                        LOGGER.info("wartość " + value);
+                        log.info("wartość " + value);
                     });
 
         });
