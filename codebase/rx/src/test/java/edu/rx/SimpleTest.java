@@ -90,7 +90,7 @@ public class SimpleTest {
                   .mergeWith(secondCell)
                   .buffer(500, TimeUnit.MILLISECONDS)
                   .filter((list) -> list.size() == 0)
-                  .subscribe((value) -> LOGGER.info(value));
+                  .subscribe((value) -> System.out.println(value));
         Thread.sleep(10000);
     }
 

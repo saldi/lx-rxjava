@@ -25,6 +25,6 @@ services:
     links:
       - h2
     ports:
-      - 9090:8080
+      - 9000:8080
     env_file:
       - locations-data.properties.env
