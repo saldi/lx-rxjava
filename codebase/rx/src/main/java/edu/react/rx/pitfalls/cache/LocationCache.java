@@ -63,7 +63,7 @@ public class LocationCache {
     private Maybe<Location> fetchDataFromSource(String divisionNumber) {
         return loadLocation(divisionNumber)
                 .doOnSuccess(location -> {
-                    cacheRepository.save(divisionNumber, location);
+                    cacheRepository.save(divisionNumber, location).subscribe();
                 })
                 .doOnSuccess(location -> {
                     log.info("retrieve");

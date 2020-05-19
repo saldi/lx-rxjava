@@ -25,7 +25,7 @@ public class RunHttpTests {
 
     @Test
     public void simpleHttpTest() throws InterruptedException, ExecutionException {
-        AsyncHttpClient asyncHttpClient = asyncHttpClient(config().build());
+        AsyncHttpClient asyncHttpClient = asyncHttpClient(config().setIoThreadsCount(1).build());
         RxHttpClient rxHttpClient = RxHttpClient.create(asyncHttpClient);
         asyncHttpClient.executeRequest(get("http://localhost:8080/reset")).get();
         AtomicInteger counter = new AtomicInteger(0);
@@ -37,6 +37,7 @@ public class RunHttpTests {
             maybe.subscribe(response -> {
                 log.info("Response Status {}", response.getStatusCode());
                 log.info(counter.getAndIncrement());
+                Thread.sleep(100);
             });
         }
 
@@ -53,16 +54,16 @@ public class RunHttpTests {
 
         ExecutorService executorService = Executors.newFixedThreadPool(5);
 
-//        Observable<String> observable = Observable.fromCallable(() -> {
-//            Thread.sleep(1500);
-//            log.info("Callable");
-//            return "Ala ma kota";
-//        });
-//        for (int i = 0; i < 20; i++) {
-//            observable
-//                    .subscribeOn(Schedulers.computation())
-//                    .subscribe(v -> log.info(v));
-//        }
+        Observable<String> observable = Observable.fromCallable(() -> {
+            Thread.sleep(1500);
+            log.info("Callable");
+            return "Ala ma kota";
+        });
+        for (int i = 0; i < 20; i++) {
+            observable
+                    .subscribeOn(Schedulers.computation())
+                    .subscribe(v -> log.info(v));
+        }
 
         for (int i = 0; i < 1; i++) {
             long time = System.currentTimeMillis();
@@ -70,8 +71,7 @@ public class RunHttpTests {
                     .addQueryParam("_sleep", "5000")
                     .addHeader("TraceId", generateTraceId())
                     .build());
-            maybe.observeOn(Schedulers.from(executorService));
-            maybe.timeout(2000, TimeUnit.MILLISECONDS)
+            maybe.timeout(2000, TimeUnit.MILLISECONDS, Schedulers.from(executorService))
                  .doOnError(throwable -> {
                      log.error("Timeout {}", System.currentTimeMillis() - time);
                  })

@@ -23,6 +23,8 @@ public class SimpleTest {
     @Test
     public void simple() {
         Observable<String> observable = Observable.just("Kowalski Jan");
+        observable.map(s -> s.toUpperCase())
+                  .subscribe(s -> log.info(s));
 
     }
 
@@ -30,6 +32,17 @@ public class SimpleTest {
     public void array() {
         Observable.fromArray(1, 2, 3, 4, 5);
     }
+
+    @Test
+    public void mapExample() {
+
+        Observable<String> stream = Observable.just("Jan Kowalski");
+        stream.map(str -> str.toUpperCase())
+              .map(str -> null)
+              .subscribe(str -> log.info(str), throwable -> log.error(throwable));
+
+    }
+
 
     @Test
     public void emitter() throws InterruptedException {
